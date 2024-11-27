@@ -1,38 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:medan_go/chatbot.dart';
+import 'package:medan_go/planner.dart';
 
-class HomePage extends StatelessWidget {
+import 'explore.dart';
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  HomePageState createState() => HomePageState();
+}
+
+class HomePageState extends State<HomePage> {
+  int _selectedIndex = 0; // Track the selected tab index
+
+  // List of screens for navigation
+  final List<Widget> _pages = [
+    const HomeScreen(), // Home screen (You can keep your HomePage or create a new one)
+    const PlannerPage(), // Planner screen
+    const ChatbotPage(), // Chatbot screen
+    const ExplorePage(), // Explore screen
+  ];
+
+  // Handle bottom navigation item tap
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Handle navigation for feature cards to also change the selected index
+  void _onFeatureCardTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Update selected index based on the feature
+    });
+    // You can also navigate to the specific screen if needed:
+    if (index == 1) {
+      Navigator.pushNamed(context, '/planner');
+    } else if (index == 2) {
+      Navigator.pushNamed(context, '/chatbot');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.teal,
-        elevation: 0,
-        title: const Text("Explore Medan Your Way",
-            style: TextStyle(color: Colors.white)),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
-            onPressed: () {
-              // Navigate to notifications page
-            },
+      appBar: _selectedIndex == 0 // Only show app bar on Home Screen
+          ? AppBar(
+              backgroundColor: Colors.teal,
+              elevation: 0,
+              title: const Text("Explore Medan Your Way",
+                  style: TextStyle(color: Colors.white)),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.notifications, color: Colors.white),
+                  onPressed: () {
+                    // Navigate to notifications page
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.settings, color: Colors.white),
+                  onPressed: () {
+                    // Navigate to settings page
+                  },
+                ),
+              ],
+            )
+          : null, // No app bar for other screens
+      body: _pages[
+          _selectedIndex], // Display the selected screen from _pages list
+
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.grey,
+        currentIndex: _selectedIndex, // Track the selected index
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
           ),
-          IconButton(
-            icon: const Icon(Icons.settings, color: Colors.white),
-            onPressed: () {
-              // Navigate to settings page
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: "Planner",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat_bubble_outline),
+            label: "Chatbot",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: "Explore",
           ),
         ],
+        onTap: _onItemTapped, // Handle navigation
       ),
+    );
+  }
+}
+
+// Home Screen Widget
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Greeting Section
               Text(
                 'Hi there! Ready to explore Medan?',
                 style: TextStyle(
@@ -146,34 +225,6 @@ class HomePage extends StatelessWidget {
             ],
           ),
         ),
-      ),
-
-      // Persistent Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.teal,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: "Planner",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble_outline),
-            label: "Chatbot",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: "Explore",
-          ),
-        ],
-        onTap: (index) {
-          // Handle navigation
-        },
       ),
     );
   }

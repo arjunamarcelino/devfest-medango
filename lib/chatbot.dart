@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final backendApi = dotenv.env['BACKEND_API']; // Read from .env
 
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
@@ -17,7 +22,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     },
   ];
 
-  void _sendMessage(String text) {
+  void _sendMessage(String text) async {
     if (text.trim().isEmpty) return;
 
     // Add user message to the list
@@ -26,27 +31,34 @@ class _ChatbotPageState extends State<ChatbotPage> {
       _messageController.clear();
     });
 
-    // Simulate a bot response after a short delay
-    Future.delayed(const Duration(milliseconds: 500), () {
+    try {
+      // Send the message to the backend
+      final response = await http.post(
+        Uri.parse("$backendApi/chat"), // Update with FastAPI URL
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"message": text}),
+      );
+
+      if (response.statusCode == 200) {
+        final botResponse = jsonDecode(response.body)["response"];
+        setState(() {
+          _messages.add({"sender": "bot", "text": botResponse});
+        });
+      } else {
+        setState(() {
+          _messages.add({
+            "sender": "bot",
+            "text": "Sorry, something went wrong. Please try again later."
+          });
+        });
+      }
+    } catch (e) {
       setState(() {
         _messages.add({
           "sender": "bot",
-          "text": _generateBotResponse(text),
+          "text": "Sorry, I couldn't connect to the server."
         });
       });
-    });
-  }
-
-  String _generateBotResponse(String userMessage) {
-    // Simulate AI-based recommendations
-    if (userMessage.toLowerCase().contains("breakfast")) {
-      return "Try 'Warung Kopi Bukit' for a great breakfast nearby!";
-    } else if (userMessage.toLowerCase().contains("festival")) {
-      return "The Medan Cultural Festival is happening today at Lapangan Merdeka!";
-    } else if (userMessage.toLowerCase().contains("attraction")) {
-      return "Visit the iconic Istana Maimun for a dose of history!";
-    } else {
-      return "I'm not sure about that, but you can explore attractions, restaurants, or events.";
     }
   }
 

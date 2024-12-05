@@ -4,8 +4,10 @@ import 'package:medan_go/homepage.dart';
 import 'package:medan_go/planner.dart';
 import 'chatbot.dart';
 import 'splash_screen.dart'; // Import the splash screen
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
+  await dotenv.load(); // Load .env file
   runApp(const MyApp());
 }
 

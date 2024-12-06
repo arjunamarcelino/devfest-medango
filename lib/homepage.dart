@@ -30,17 +30,17 @@ class HomePageState extends State<HomePage> {
   }
 
   // Handle navigation for feature cards to also change the selected index
-  void _onFeatureCardTapped(int index) {
-    setState(() {
-      _selectedIndex = index; // Update selected index based on the feature
-    });
-    // You can also navigate to the specific screen if needed:
-    if (index == 1) {
-      Navigator.pushNamed(context, '/planner');
-    } else if (index == 2) {
-      Navigator.pushNamed(context, '/chatbot');
-    }
-  }
+  // void _onFeatureCardTapped(int index) {
+  //   setState(() {
+  //     _selectedIndex = index; // Update selected index based on the feature
+  //   });
+  //   // You can also navigate to the specific screen if needed:
+  //   if (index == 1) {
+  //     Navigator.pushNamed(context, '/planner');
+  //   } else if (index == 2) {
+  //     Navigator.pushNamed(context, '/chatbot');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

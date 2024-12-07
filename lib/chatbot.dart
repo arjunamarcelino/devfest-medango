@@ -67,7 +67,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.teal,
-        title: const Text("Ask MedanGo"),
+        title: const Text("Ask LekGo"),
         centerTitle: true,
       ),
       body: Column(

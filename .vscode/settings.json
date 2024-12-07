@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "D:/medango/linux"
+    "cmake.sourceDirectory": "D:/medango/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

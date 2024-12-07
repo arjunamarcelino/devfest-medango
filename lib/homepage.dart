@@ -147,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                       },
                       child: const FeatureCard(
                         icon: Icons.chat_bubble_outline,
-                        title: 'Ask MedanGo',
+                        title: 'Ask LekGo',
                         description: 'Get quick recommendations.',
                         color: Colors.orange,
                       ),

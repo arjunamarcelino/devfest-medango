@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 
 final backendApi = dotenv.env['BACKEND_API']; // Read from .env
 
@@ -188,18 +188,22 @@ class ExplorePageState extends State<ExplorePage>
           style: const TextStyle(fontSize: 14, color: Colors.black54),
         ),
         trailing: ElevatedButton(
-          onPressed: () async {
-            final url = Uri.parse(
-                'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
-            if (await canLaunchUrl(url)) {
-              await launchUrl(url);
-            } else {
-              if (mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Could not open Google Maps')),
-                );
-              }
-            }
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Exploring $title')),
+            );
+            // onPressed: () async {
+            //   final url = Uri.parse(
+            //       'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+            //   if (await canLaunchUrl(url)) {
+            //     await launchUrl(url);
+            //   } else {
+            //     {
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         const SnackBar(content: Text('Could not open Google Maps')),
+            //       );
+            //     }
+            //   }
           },
           style: ElevatedButton.styleFrom(backgroundColor: Colors.teal),
           child: const Text('Explore'),

@@ -75,11 +75,11 @@ class ExplorePageState extends State<ExplorePage>
 
       // Fetch Tempat Makan
       final makanResponse = await http.get(Uri.parse(
-          "$backendApi/nearby-places?location=$location&radius=$radius&type=restaurant&keyword=$keyword&language=$language"));
+          "$backendApi/places/nearby?location=$location&radius=$radius&type=restaurant&keyword=$keyword&language=$language"));
 
       // Fetch Tempat Wisata
       final wisataResponse = await http.get(Uri.parse(
-          "$backendApi/nearby-places?location=$location&radius=$radius&type=tourist_attraction&keyword=$keyword&language=$language"));
+          "$backendApi/places/nearby?location=$location&radius=$radius&type=tourist_attraction&keyword=$keyword&language=$language"));
 
       if (makanResponse.statusCode == 200 && wisataResponse.statusCode == 200) {
         setState(() {

@@ -34,7 +34,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     try {
       // Send the message to the backend
       final response = await http.post(
-        Uri.parse("$backendApi/chat"), // Update with FastAPI URL
+        Uri.parse("$backendApi/chat/chat"), // Update with FastAPI URL
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"message": text}),
       );

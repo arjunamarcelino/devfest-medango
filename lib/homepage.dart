@@ -13,14 +13,21 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   int _selectedIndex = 0; // Track the selected tab index
+  late List<Widget> _pages;
 
-  // List of screens for navigation
-  final List<Widget> _pages = [
-    const HomeScreen(), // Home screen (You can keep your HomePage or create a new one)
-    const PlannerPage(), // Planner screen
-    const ChatbotPage(), // Chatbot screen
-    const ExplorePage(), // Explore screen
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize _pages in initState
+    _pages = [
+      HomeScreen(
+          onFeatureCardTapped: _onFeatureCardTapped), // Pass the callback
+      const PlannerPage(),
+      const ChatbotPage(),
+      const ExplorePage(),
+    ];
+  }
 
   // Handle bottom navigation item tap
   void _onItemTapped(int index) {
@@ -29,18 +36,12 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  // Handle navigation for feature cards to also change the selected index
-  // void _onFeatureCardTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index; // Update selected index based on the feature
-  //   });
-  //   // You can also navigate to the specific screen if needed:
-  //   if (index == 1) {
-  //     Navigator.pushNamed(context, '/planner');
-  //   } else if (index == 2) {
-  //     Navigator.pushNamed(context, '/chatbot');
-  //   }
-  // }
+  // Handle feature card taps
+  void _onFeatureCardTapped(int index) {
+    setState(() {
+      _selectedIndex = index; // Update selected index to match feature card
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +102,9 @@ class HomePageState extends State<HomePage> {
 
 // Home Screen Widget
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final Function(int) onFeatureCardTapped; // Callback to handle card taps
+
+  const HomeScreen({super.key, required this.onFeatureCardTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -126,10 +129,8 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context,
-                            '/planner'); // Navigate to Itinerary Planner
-                      },
+                      onTap: () => onFeatureCardTapped(
+                          1), // Use callback for Planner navigation
                       child: const FeatureCard(
                         icon: Icons.map,
                         title: 'Plan Your Trip',
@@ -141,10 +142,8 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, '/chatbot'); // Navigate to Chatbot
-                      },
+                      onTap: () => onFeatureCardTapped(
+                          2), // Use callback for Chatbot navigation
                       child: const FeatureCard(
                         icon: Icons.chat_bubble_outline,
                         title: 'Ask LekGo',
@@ -155,11 +154,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
+
               const SizedBox(height: 24),
 
               // Suggested Plans or Quick Options Section
               const Text(
-                "Your Trips",
+                "Trips Recommendation",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

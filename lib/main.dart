@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:medan_go/explore.dart';
 import 'package:medan_go/homepage.dart';
 import 'package:medan_go/planner.dart';
+import 'package:medan_go/register.dart';
 import 'chatbot.dart';
+import 'login.dart';
 import 'splash_screen.dart'; // Import the splash screen
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:permission_handler/permission_handler.dart'; // Add the permission_handler package
 import 'package:logger/logger.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   // Load .env file
@@ -14,6 +18,11 @@ void main() async {
 
   // Request location permission
   await _requestLocationPermission();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }
@@ -53,6 +62,8 @@ class MyApp extends StatelessWidget {
         '/planner': (context) => const PlannerPage(), // Planner page route
         '/chatbot': (context) => const ChatbotPage(), // Chatbot page route
         '/explore': (context) => const ExplorePage(), // Explore page route
+        '/login': (context) => const LoginPage(), // Login page route
+        '/register': (context) => const RegisterPage(),
       },
     );
   }
